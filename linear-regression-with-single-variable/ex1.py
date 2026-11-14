@@ -7,6 +7,7 @@ LET'S TRY THIS WITH MULIPLE VARIABLE REGRESSION
 
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 x_train = np.array([1., 1.2, 1.25, 1.5, 1.6, 1.6, 1.8, 2.])
 y_train = np.array([65, 51, 60, 130, 121, 120, 95, 170])
@@ -57,6 +58,20 @@ def gradient_descent(x,y,w_in,b_in,alpha,num_iters,compute_cost,compute_gradient
             J_history.append(compute_cost(x,y,w,b))
             P_history.append([w,b])
 
+        assets_dir = os.path.join(os.path.dirname(__file__), "..", "assets")
+        os.makedirs(assets_dir, exist_ok=True)
+
+    plt.figure(figsize=(8, 5))
+    plt.plot(range(len(J_history)), J_history, color="#1f77b4", linewidth=2)
+    plt.title("Gradient Descent Convergence")
+    plt.xlabel("Iterations")
+    plt.ylabel("Cost J(w, b)")
+    plt.grid(True, linestyle="--", alpha=0.6)
+    plt.tight_layout()
+
+    plt.savefig(os.path.join(assets_dir, "cost_convergence.png"), dpi=300)
+    plt.show()
+        
     return w,b,J_history,P_history
 
 # Change these values in your code
@@ -80,9 +95,17 @@ def compute_output(x,w,b):
 output = compute_output(x_train,w_final,b_final)
 print(output)
 
+assets_dir = os.path.join(os.path.dirname(__file__), "..", "assets")
+os.makedirs(assets_dir, exist_ok=True)
+
+plt.figure(figsize=(8, 5))
 plt.scatter(x_train,y_train,marker='s',c='r',label="Actual Values")
 plt.plot(x_train,output,c='b',label='Model Prediction (Random Parameters)')
 plt.xlabel("Area in sqft")
 plt.ylabel("Price (in lakhs)")
 plt.title("HOUSING PRICE (IN MALAKPET)")
+plt.legend()
+plt.grid(True, linestyle="--", alpha=0.6)
+plt.tight_layout()
+plt.savefig(os.path.join(assets_dir, "regression_fit.png"), dpi=300)
 plt.show()
